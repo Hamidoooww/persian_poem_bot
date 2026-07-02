@@ -1,0 +1,35 @@
+name: Telegram Bot CI
+
+# این ورک‌فلو هر بار که روی شاخه main پوش کنی اجرا میشه
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        # نصب مستقیم aiogram
+        pip install aiogram
+        # اگر فایل نیازمندی‌ها داری، اون رو هم نصب می‌کنه
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    - name: Check syntax errors (Lint)
+      run: |
+        pip install flake8
+        # فقط خطاهای خیلی واضح و سینتکسی رو گیر میده تا جلوی کرش کردن ربات رو بگیره
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics

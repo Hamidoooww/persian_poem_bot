@@ -1,36 +1,28 @@
-name: Continuous Telegram Bot Run
+name: Test Telegram Bot
 
 on:
-  push:
-    branches: [ "main" ]
-  # این گزینه بهت اجازه میده هر زمان ربات خاموش شد، از تب Actions با یک کلیک دوباره روشنش کنی
-  workflow_dispatch:
+  workflow_dispatch:   # فقط با دست اجرا بشه
 
 jobs:
   run-bot:
     runs-on: ubuntu-latest
-    # تنظیم زمان روی ۳۵۰ دقیقه (کمی کمتر از سقف ۶ ساعت گیت‌هاب برای جلوگیری از خطای ناگهانی)
-    timeout-minutes: 350 
+    timeout-minutes: 30   # بعد از ۵ دقیقه خودکار قطع بشه
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.11"
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install aiogram
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Run Telegram Bot
-      env:
-        # خواندن توکن از سکرت‌های گیت‌هاب که در مرحله قبل ساختی
-        BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-      run: |
-        # توجه: فرض کردم اسم فایل پایتون شما main.py یا bot.py هست. 
-        # اگر اسم فایلت چیز دیگه‌ای هست، خط زیر رو اصلاح کن.
-        python main.py
+      - name: Run bot
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+        run: python main.py   # اگر اسم فایلت فرق داره، عوض کن

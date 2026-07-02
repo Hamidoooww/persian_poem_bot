@@ -7,7 +7,7 @@ import database
 import os
 
 
-TOKEN = os.getenv('TOKEN')
+TOKEN = os.getenv('BOT_TOKEN')
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()

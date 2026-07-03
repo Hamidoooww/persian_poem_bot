@@ -25,3 +25,34 @@ def get_random_poem():
         return khrooji
     else:
         return None
+    
+def get_books_by_poet(poet_name):
+    conn = sqlite3.connect("poems.db")
+    cur = conn.cursor()
+
+    query ='''
+            SELECT books.book_name
+            FROM books
+            JOIN poets ON books.poets_id = poets.id
+            WHERE poets.poet_name = ?;
+                '''
+    
+    cur.execute(query, (poet_name,))
+    books = cur.fetchall()
+    return books
+
+def get_parts_by_book(book_name):
+    conn = sqlite3.connect("poems.db")
+    cur = conn.cursor()
+
+    query ='''
+            SELECT parts.part_name
+            FROM parts
+            JOIN books ON parts.book_id = books.id
+            WHERE books.book_name = ?;
+                '''
+    
+    cur.execute(query, (book_name,))
+    parts = cur.fetchall()
+    return parts
+print(get_parts_by_book("بوستان"))

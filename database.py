@@ -73,3 +73,21 @@ def get_poem_count_by_part(part_name,book_name):
     count = cur.fetchone()[0]
     return count
 
+def get_poem_text_by_number(part_name, book_name, poem_number):
+    conn = sqlite3.connect("poems.db")
+    cur = conn.cursor()
+
+    query ='''
+            SELECT poems.verse, parts.part_name, poets.poet_name
+            FROM poems
+            JOIN parts ON poems.parts_id = parts.id
+            JOIN books ON parts.book_id = books.id
+            JOIN poets ON books.poets_id = poets.id
+            WHERE parts.part_name = ? AND books.book_name = ?
+            ORDER BY poems.id
+            LIMIT 1 OFFSET ?;
+                '''
+    
+    cur.execute(query, (part_name, book_name, poem_number - 1))
+    poem_text = cur.fetchone()
+    return poem_text if poem_text else None

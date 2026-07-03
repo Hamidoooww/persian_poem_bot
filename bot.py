@@ -41,7 +41,7 @@ async def send_saadi_poems(message: types.Message):
     books = database.get_books_by_poet("سعدی")
     keyboard_bottons = []
     for book in books:
-        keyboard_bottons.append([types.KeyboardButton(text=book)])
+        keyboard_bottons.append([types.KeyboardButton(text=book[0])])
     await message.answer("لطفا یکی از کتاب های شاعر را انتخاب کنید", reply_markup=types.ReplyKeyboardMarkup(keyboard=keyboard_bottons, resize_keyboard=True))
 
 
@@ -50,7 +50,7 @@ async def send_booston_poems(message: types.Message):
     parts = database.get_parts_by_book("بوستان")
     keyboard_bottons = []
     for part in parts:
-        keyboard_bottons.append([types.KeyboardButton(text=part)])
+        keyboard_bottons.append([types.KeyboardButton(text=part[0])])
     await message.answer("لطفا یکی از بخش های کتاب را انتخاب کنید", reply_markup=types.ReplyKeyboardMarkup(keyboard=keyboard_bottons, resize_keyboard=True))
 
 
@@ -60,7 +60,7 @@ async def send_khobithat_poems(message: types.Message):
     parts = database.get_parts_by_book("خبیثات و مجالس الهزل")
     keyboard_bottons = []
     for part in parts:
-        keyboard_bottons.append([types.KeyboardButton(text=part)])
+        keyboard_bottons.append([types.KeyboardButton(text=part[0])])
     await message.answer("لطفا یکی از بخش های کتاب را انتخاب کنید", reply_markup=types.ReplyKeyboardMarkup(keyboard=keyboard_bottons, resize_keyboard=True))
 
 @dp.message(F.text == "دیوان اشعار")
@@ -68,7 +68,7 @@ async def send_divan_poems(message: types.Message):
     parts = database.get_parts_by_book("دیوان اشعار")
     keyboard_bottons = []
     for part in parts:
-        keyboard_bottons.append([types.KeyboardButton(text=part)])
+        keyboard_bottons.append([types.KeyboardButton(text=part[0])])
     await message.answer("لطفا یکی از بخش های کتاب را انتخاب کنید", reply_markup=types.ReplyKeyboardMarkup(keyboard=keyboard_bottons, resize_keyboard=True))
 
 @dp.message(F.text == "مواعظ")
@@ -76,7 +76,7 @@ async def send_mavaaez_poems(message: types.Message):
     parts = database.get_parts_by_book("مواعظ")
     keyboard_bottons = []
     for part in parts:
-        keyboard_bottons.append([types.KeyboardButton(text=part)])
+        keyboard_bottons.append([types.KeyboardButton(text=part[0])])
     await message.answer("لطفا یکی از بخش های کتاب را انتخاب کنید", reply_markup=types.ReplyKeyboardMarkup(keyboard=keyboard_bottons, resize_keyboard=True))
 
 @dp.message(F.text == "گلستان")
@@ -84,7 +84,7 @@ async def send_golestaan_poems(message: types.Message):
     parts = database.get_parts_by_book("گلستان")
     keyboard_bottons = []
     for part in parts:
-        keyboard_bottons.append([types.KeyboardButton(text=part)])
+        keyboard_bottons.append([types.KeyboardButton(text=part[0])])
     await message.answer("لطفا یکی از بخش های کتاب را انتخاب کنید", reply_markup=types.ReplyKeyboardMarkup(keyboard=keyboard_bottons, resize_keyboard=True))
 
 @dp.message(F.text == "ارتباط با ادمین")

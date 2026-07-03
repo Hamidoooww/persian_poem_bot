@@ -55,4 +55,21 @@ def get_parts_by_book(book_name):
     cur.execute(query, (book_name,))
     parts = cur.fetchall()
     return parts
-print(get_parts_by_book("بوستان"))
+
+#یه فانکشن اینجا باشه که وقتی پارت رو بهش میدی تعداد شعر های اون پارت رو بهت برگردونه که مثلا باب اول بوستان ۲۵ دونه شعر داره
+def get_poem_count_by_part(part_name,book_name):
+    conn = sqlite3.connect("poems.db")
+    cur = conn.cursor()
+
+    query ='''
+            SELECT COUNT(*)
+            FROM poems
+            JOIN parts ON poems.parts_id = parts.id
+            JOIN books ON parts.book_id = books.id
+            WHERE parts.part_name = ? AND books.book_name = ?;
+                '''
+    
+    cur.execute(query, (part_name, book_name))
+    count = cur.fetchone()[0]
+    return count
+

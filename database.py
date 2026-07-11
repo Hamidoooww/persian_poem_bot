@@ -91,3 +91,15 @@ def get_poem_text_by_number(part_name, book_name, poem_number):
     cur.execute(query, (part_name, book_name, poem_number - 1))
     poem_text = cur.fetchone()
     return poem_text if poem_text else None
+
+def get_poets ():
+    conn = sqlite3.connect("poems.db")
+    cur = conn.cursor()
+
+    query = '''
+        SELECT poets.poet_name
+        FROM poets
+'''
+    cur.execute(query)
+    poem_text = cur.fetchall
+    return poem_text

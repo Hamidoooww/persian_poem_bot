@@ -3,7 +3,7 @@ import asyncio
 import os
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
-from aiogram.types import Message
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram import Bot, Dispatcher, F, types
 from aiogram.filters import Command
 import database
@@ -25,19 +25,32 @@ async def start_button(message: types.Message, state: FSMContext):
     await message.answer("سلام به بات شعر فارسی خوش‌اومدی \n یکی از گزینه‌های زیر رو انتخاب کن",
                           reply_markup=types.ReplyKeyboardMarkup(keyboard=[
                               [types.KeyboardButton(text="شعر رندوم")],
-                              [types.KeyboardButton(text="اشعار سعدی")],
+                              [types.KeyboardButton(text="آثار شاعران")],
                               [types.KeyboardButton(text="ارتباط با ادمین")]
                           ], resize_keyboard=True))
 
 @dp.message(F.text == "شعر رندوم")
 async def send_random_poem(message: types.Message):
-    message_text = database.get_random_poem()
-    if message_text:
-        await message.answer(message_text, parse_mode="Markdown")
-    else:
-        await message.answer("متاسفانه هیچ شعری پیدا نشد\n لطفا دوباره تلاش کنید")
+    try:
+        message_text = database.get_random_poem()
+        if message_text:
+            await message.answer(message_text, parse_mode="Markdown")
+        else:
+            await message.answer("متاسفانه هیچ شعری پیدا نشد\n لطفا دوباره تلاش کنید")
+    except Exception as e:
+        print(e)
 
-@dp.message(F.text == "اشعار سعدی")
+@dp.message(F.text == "آثار شاعران")
+async def send_poets_name(message: types.Message):
+    try:
+        poets = database.get_poets()
+        glass_key = InlineKeyboardMarkup(inline_keyboard= [[InlineKeyboardButton(text="سعدی", callback_data="sadi")],[InlineKeyboardButton(text='بازگشت به منوی اصلی', callback_data='back_to_menu')]])
+        await message.answer("لطفا یکی از شاعران زیر را انتخاب کنی  \n (با عرض پوزش فعلا فقط سعدی رو داریم)",
+                              reply_markup= glass_key)
+    except:
+        await message.answer('بات را مجدد استارت کنید')
+
+@dp.message(F.data == "sadi")
 async def send_saadi_poems(message: types.Message, state: FSMContext):
     books = database.get_books_by_poet("سعدی")
     keyboard_buttons = [[types.KeyboardButton(text=book[0])] for book in books]

@@ -51,12 +51,12 @@ async def send_poets_name(message: types.Message):
         await message.answer('بات را مجدد استارت کنید')
 
 @dp.message(F.data == "sadi")
-async def send_saadi_poems(message: types.Message, state: FSMContext):
+async def send_saadi_poems(call_back : types.CallbackQuery, state : FSMContext):
     books = database.get_books_by_poet("سعدی")
     keyboard_buttons = [[types.KeyboardButton(text=book[0])] for book in books]
     keyboard_buttons.append([types.KeyboardButton(text="بازگشت به منوی اصلی")])
     
-    await message.answer("لطفا یکی از کتاب‌های شاعر را انتخاب کنید", reply_markup=types.ReplyKeyboardMarkup(keyboard=keyboard_buttons, resize_keyboard=True))
+    await call_back.answer("لطفا یکی از کتاب‌های شاعر را انتخاب کنید", reply_markup=types.ReplyKeyboardMarkup(keyboard=keyboard_buttons, resize_keyboard=True))
     await state.set_state(PoemStates.waiting_for_book)
     await state.update_data(current_poet_name="سعدی")
 

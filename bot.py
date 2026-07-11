@@ -50,7 +50,7 @@ async def send_poets_name(message: types.Message):
     except:
         await message.answer('بات را مجدد استارت کنید')
 
-@dp.message(F.data == "sadi")
+@dp.callback_query(F.data == "sadi")
 async def send_saadi_poems(call_back : types.CallbackQuery, state : FSMContext):
     books = database.get_books_by_poet("سعدی")
     keyboard_buttons = [[types.KeyboardButton(text=book[0])] for book in books]

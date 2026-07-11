@@ -56,7 +56,8 @@ async def send_saadi_poems(call_back : types.CallbackQuery, state : FSMContext):
     keyboard_buttons = [[types.KeyboardButton(text=book[0])] for book in books]
     keyboard_buttons.append([types.KeyboardButton(text="بازگشت به منوی اصلی")])
     
-    await call_back.answer("لطفا یکی از کتاب‌های شاعر را انتخاب کنید", reply_markup=types.ReplyKeyboardMarkup(keyboard=keyboard_buttons, resize_keyboard=True))
+    await call_back.answer()
+    await call_back.message.answer("لطفا یکی از کتاب‌های شاعر را انتخاب کنید", reply_markup=types.ReplyKeyboardMarkup(keyboard=keyboard_buttons, resize_keyboard=True))
     await state.set_state(PoemStates.waiting_for_book)
     await state.update_data(current_poet_name="سعدی")
 
